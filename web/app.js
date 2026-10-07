@@ -53,12 +53,22 @@
     save(); render(); $("spItems").value = "";
   });
 
+  function showNotice(text) { $("notice").textContent = text; $("notice").hidden = false; }
+  // ホーム画面から開いたアプリと Safari は保存領域が別。ショートカットは Safari で開く。
+  if (window.navigator.standalone) {
+    showNotice("ホーム画面のアプリで開いています。ショートカットはSafariで開くため、ここでの設定は反映されません。設定はSafariでこのページを開いて行ってください。");
+  }
+
   // ---- チェック画面(全部チェックするまで閉じられない) ----
   let showing = false;
   function showCheck() {
     if (showing) return;
     const items = L.itemsFor(cfg, new Date());
-    if (!items.length) return;
+    if (!items.length) {
+      showNotice("今日の持ち物が登録されていません。下の「いつもの持ち物」に追加してください。");
+      window.scrollTo(0, 0);
+      return;
+    }
     showing = true;
     const ul = $("checkList");
     ul.textContent = "";
