@@ -20,12 +20,6 @@
   <button id="checkNow" class="primary">今日の持ち物をチェックする</button>
 
   <section>
-    <h2>通知時刻</h2>
-    <ul id="timeList" class="list"></ul>
-    <form id="timeForm" class="row"><input id="timeInput" type="time" required><button>追加</button></form>
-  </section>
-
-  <section>
     <h2>いつもの持ち物</h2>
     <ul id="defList" class="list"></ul>
     <form id="defForm" class="row"><input id="defInput" placeholder="例: 財布" required><button>追加</button></form>
@@ -44,10 +38,10 @@
 
   <section>
     <h2>iPhoneで毎日自動で開く設定</h2>
-    <p class="hint">iPhoneのWebアプリはバックグラウンドで勝手にポップアップを出せません。代わりに「ショートカット」アプリのオートメーションで、決めた時刻にこのアプリを自動で開きます。</p>
+    <p class="hint">iPhoneのWebアプリはバックグラウンドで勝手にポップアップを出せません。代わりに「ショートカット」アプリのオートメーションで、決めた時刻にこのアプリを自動で開きます。<b>通知する時刻は、ショートカット側で設定します。</b></p>
     <ol class="steps">
       <li>Safariでこのページを開き、共有ボタン →「ホーム画面に追加」</li>
-      <li>「ショートカット」アプリ →「オートメーション」→ ＋ →「時刻」で通知時刻を選ぶ</li>
+      <li>「ショートカット」アプリ →「オートメーション」→ ＋ →「時刻」で毎日の通知時刻を選ぶ(時刻を変えたい時もここで変更)</li>
       <li>アクション「URLを開く」に下のURLを設定し、「実行前に確認」をオフ</li>
     </ol>
     <input id="autoUrl" readonly>
