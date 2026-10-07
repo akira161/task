@@ -1,0 +1,11 @@
+{
+  "name": "task",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ブラウザで動く、並列タスク管理アプリ（依存ゼロ）",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": { "node": ">=18" }
+}
