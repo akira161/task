@@ -1,21 +1,18 @@
 (function () {
   const L = window.Logic;
   const KEY = "mochimono.config.v1";
-  const FIRED_KEY = "mochimono.fired.v1";
   const $ = (id) => document.getElementById(id);
 
-  const DEFAULT = { times: ["07:30"], defaultItems: ["財布", "スマホ", "鍵", "定期券"], special: [] };
+  const DEFAULT = { defaultItems: ["財布", "スマホ", "鍵", "定期券"], special: [] };
 
   function load() {
     try {
       const c = JSON.parse(localStorage.getItem(KEY));
-      if (c && Array.isArray(c.times) && Array.isArray(c.defaultItems) && Array.isArray(c.special)) return c;
+      if (c && Array.isArray(c.defaultItems) && Array.isArray(c.special)) return c;
     } catch (e) {}
     return JSON.parse(JSON.stringify(DEFAULT));
   }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(cfg)); } catch (e) {} }
-  function loadFired() { try { return JSON.parse(localStorage.getItem(FIRED_KEY)) || []; } catch (e) { return []; } }
-  function saveFired(f) { try { localStorage.setItem(FIRED_KEY, JSON.stringify(f)); } catch (e) {} }
 
   let cfg = load();
 
@@ -35,19 +32,12 @@
     });
   }
   function render() {
-    renderList($("timeList"), cfg.times, (i) => { cfg.times.splice(i, 1); save(); render(); });
     renderList($("defList"), cfg.defaultItems, (i) => { cfg.defaultItems.splice(i, 1); save(); render(); });
     renderList($("spList"), cfg.special.map((e) => e.date + ": " + e.items.join(", ")),
       (i) => { cfg.special.splice(i, 1); save(); render(); },
       (i) => { $("spDate").value = cfg.special[i].date; $("spItems").value = cfg.special[i].items.join(", "); });
   }
 
-  $("timeForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const t = L.normalizeTime($("timeInput").value);
-    if (t && !cfg.times.includes(t)) { cfg.times.push(t); cfg.times.sort(); save(); render(); }
-    $("timeInput").value = "";
-  });
   $("defForm").addEventListener("submit", (e) => {
     e.preventDefault();
     for (const it of L.splitItems($("defInput").value)) if (!cfg.defaultItems.includes(it)) cfg.defaultItems.push(it);
@@ -97,21 +87,6 @@
   });
   $("checkNow").addEventListener("click", showCheck);
 
-  // ---- 時刻になったら(アプリを開いている間)自動表示 ----
-  function tick() {
-    const now = new Date();
-    const day = L.isoDate(now);
-    const fired = loadFired().filter((k) => k.startsWith(day));
-    const due = L.dueTimes(cfg, now, fired);
-    if (due.length) {
-      due.forEach((t) => fired.push(day + " " + t));
-      saveFired(fired);
-      showCheck();
-    }
-  }
-  setInterval(tick, 15000);
-  document.addEventListener("visibilitychange", () => { if (!document.hidden) tick(); });
-
   // ---- 起動時 ----
   $("autoUrl").value = location.origin + location.pathname.replace(/[^/]*$/, "") + "?check=1";
   $("copyUrl").addEventListener("click", () => {
@@ -122,7 +97,6 @@
   });
   render();
   if (new URLSearchParams(location.search).has("check")) showCheck();
-  else tick();
 
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 })();
