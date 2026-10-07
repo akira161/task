@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="持ち物">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#2563eb">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<title>持ち物チェック</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <h1>持ち物チェック</h1>
+  <button id="checkNow" class="primary">今日の持ち物をチェックする</button>
+
+  <section>
+    <h2>通知時刻</h2>
+    <ul id="timeList" class="list"></ul>
+    <form id="timeForm" class="row"><input id="timeInput" type="time" required><button>追加</button></form>
+  </section>
+
+  <section>
+    <h2>いつもの持ち物</h2>
+    <ul id="defList" class="list"></ul>
+    <form id="defForm" class="row"><input id="defInput" placeholder="例: 財布" required><button>追加</button></form>
+  </section>
+
+  <section>
+    <h2>特別な持ち物(日付指定)</h2>
+    <p class="hint">その日だけ、いつもの持ち物に追加されます。</p>
+    <ul id="spList" class="list"></ul>
+    <form id="spForm" class="col">
+      <input id="spDate" type="date" required>
+      <input id="spItems" placeholder="持ち物(カンマ区切り) 例: 体操服, 絵の具" required>
+      <button>追加 / 更新</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>iPhoneで毎日自動で開く設定</h2>
+    <p class="hint">iPhoneのWebアプリはバックグラウンドで勝手にポップアップを出せません。代わりに「ショートカット」アプリのオートメーションで、決めた時刻にこのアプリを自動で開きます。</p>
+    <ol class="steps">
+      <li>Safariでこのページを開き、共有ボタン →「ホーム画面に追加」</li>
+      <li>「ショートカット」アプリ →「オートメーション」→ ＋ →「時刻」で通知時刻を選ぶ</li>
+      <li>アクション「URLを開く」に下のURLを設定し、「実行前に確認」をオフ</li>
+    </ol>
+    <input id="autoUrl" readonly>
+    <button id="copyUrl">URLをコピー</button>
+  </section>
+</main>
+
+<div id="overlay" hidden role="dialog" aria-modal="true">
+  <div class="card">
+    <h2>持ち物は全部ありますか?</h2>
+    <p class="hint">すべてにチェックを入れると閉じられます</p>
+    <ul id="checkList"></ul>
+    <p id="remain" class="hint"></p>
+    <button id="okBtn" class="primary" disabled>確認OK</button>
+  </div>
+</div>
+<script src="logic.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
